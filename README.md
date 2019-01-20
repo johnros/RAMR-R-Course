@@ -1,9 +1,8 @@
 # R Course
 
-Class notes for my "R" course at Ben Gurion University.
-Feel free to use, comment, fork and suggest changes. 
+Class notes for my "R" course at RAMA.
 
-Compiled versions can be found in:
+The full course can be found in:
 
 - HTML: http://www.john-ros.com/Rcourse/
 - PDF: http://www.john-ros.com/Rcourse/Rcourse.pdf
