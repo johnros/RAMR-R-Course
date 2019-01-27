@@ -1,0 +1,58 @@
+---
+title: "Math"
+author: "Jonathan Rosenblatt"
+date: "1/27/2019"
+output: html_document
+---
+
+Import data
+```{r}
+library(data.table)
+grade5 <- fread('data/math_5th.csv')
+# View(grade5)
+grade8 <- fread('data/math_8th.csv')
+# View(grade8)
+math <- merge(grade5, grade8, 
+              by = 'mispar_zehut', 
+              suffixes = c('_5th','8_th'), 
+              all = FALSE)
+# View(math)
+```
+
+```{r}
+math[,test_score_5th_0.75:=(test_score_500_5th>quantile(test_score_500_5th, 0.75))]
+math[,ses_0.25:=(ses_ishi<quantile(ses_ishi,0.25))]
+math[,survivor:=test_score_5th_0.75&ses_0.25]
+```
+
+By gender
+```{r}
+math[,benobat:=factor(benobat, labels = (c('Ben','Bat')))]
+table.1 <- math[migzarmurhav==1, table(benobat,survivor)]
+plot(table.1)
+```
+
+By country of origin
+```{r}
+math[,ole:=factor(ole, labels = (c('Zabar','Ole')))]
+table.2 <- math[migzarmurhav==1, table(ole,survivor)]
+plot(table.2)
+```
+
+By country of origin
+```{r}
+table.3 <- math[migzarmurhav==1, table(pikuach,survivor)]
+plot(table.3)
+```
+
+Progress
+```{r}
+math[,test_score_8th_0.75:=(test_score_5008_th>quantile(test_score_5008_th, 0.75))]
+math[,survivor_8th:=test_score_8th_0.75&ses_0.25]
+table.4 <- math[migzarmurhav==1, .N, 
+                by=.('S5'=survivor, 'S8'=survivor_8th)]
+
+
+alluvial::alluvial(table.4[,1:2],freq = table.4$N)
+```
+
